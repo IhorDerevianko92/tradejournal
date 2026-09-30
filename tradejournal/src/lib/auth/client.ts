@@ -1,6 +1,8 @@
 import { createAuthClient } from "better-auth/react";
 
-export const authClient = createAuthClient();
+export const authClient = createAuthClient({
+  baseURL: "https://vercel.app"
+});
 
 export const authEnabled = import.meta.env.VITE_AUTH_ENABLED !== "false";
 
