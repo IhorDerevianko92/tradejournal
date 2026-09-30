@@ -17,9 +17,7 @@ function pool(): pg.Pool {
   if (!globalRef.__journalPool__) {
     globalRef.__journalPool__ = new pg.Pool({
       connectionString: databaseUrl,
-      ssl: /supabase\.(co|com)|neon\.tech|sslmode=require/i.test(databaseUrl)
-        ? { rejectUnauthorized: false }
-        : undefined,
+      ssl: { rejectUnauthorized: false },
       max: /[?&]pgbouncer=true|:6543\b/i.test(databaseUrl) ? 1 : 8,
     });
   }
