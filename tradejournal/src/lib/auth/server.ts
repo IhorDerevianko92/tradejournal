@@ -10,9 +10,9 @@ const env = (key: string): string | undefined => {
 const databaseUrl = env("DATABASE_URL");
 const googleId = env("GOOGLE_CLIENT_ID");
 const googleSecret = env("GOOGLE_CLIENT_SECRET");
-const vercelUrl = env("VERCEL_URL");
-const appUrl =
-  env("BETTER_AUTH_URL") || (vercelUrl ? `https://${vercelUrl}` : undefined);
+
+// Жестко привязываем к вашему домену продакшна
+const appUrl = "https://vercel.app";
 
 export const authConfigured = Boolean(databaseUrl && env("BETTER_AUTH_SECRET"));
 
@@ -24,9 +24,7 @@ const extraOrigins = (env("BETTER_AUTH_TRUSTED_ORIGINS") ?? "")
 const database = databaseUrl
   ? new Pool({
       connectionString: databaseUrl,
-      ssl: /supabase\.(co|com)|neon\.tech|sslmode=require/i.test(databaseUrl)
-        ? { rejectUnauthorized: false }
-        : undefined,
+      ssl: { rejectUnauthorized: false }, // Отключаем проверку SSL для бэкенда
       max: /[?&]pgbouncer=true|:6543\b/i.test(databaseUrl) ? 1 : 8,
     })
   : undefined;
