@@ -24,9 +24,7 @@ const migrationsDir = join(dirname(fileURLToPath(import.meta.url)), "..", "migra
 function poolOptions(url) {
   return {
     connectionString: url,
-    ssl: /supabase\.(co|com)|neon\.tech|sslmode=require/i.test(url)
-      ? { rejectUnauthorized: false }
-      : undefined,
+    ssl: { rejectUnauthorized: false },
     max: 1,
   };
 }
@@ -58,7 +56,7 @@ async function main() {
       try {
         await client.query("BEGIN");
         await client.query(text);
-        await client.query("INSERT INTO _migrations (name) VALUES ($1)", [name]);
+        await client.query("INSERT INTO _migrations (name) VALUES (\$1)", [name]);
         await client.query("COMMIT");
       } catch (err) {
         console.error(`[migrate] ошибка ${name}`);
